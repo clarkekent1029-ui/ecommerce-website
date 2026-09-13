@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Performance Marketing Lab</title>
+     <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-W4C5NX79');</script>
+    <!-- End Google Tag Manager -->
+
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 0; padding: 20px; background: #f8fafc; color: #1e293b; line-height: 1.5; }
+        nav { background: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 25px; display: flex; gap: 20px; font-weight: 600; }
+        nav a { text-decoration: none; color: #2563eb; }
+        .hero { background: white; padding: 60px 20px; text-align: center; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .btn { display: inline-block; background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+        <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W4C5NX79"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager -->
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="checkout.html">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+
+    <div class="hero">
+        <h1>Performance Marketing Tracking Lab</h1>
+        <p>Your testing environment for GTM tags, GA4 ecommerce events, and custom conversion tracking.</p>
+        <a href="products.html" class="btn">Explore Merchandise Catalog</a>
+    </div>
+
+    <script>
+        document.getElementById('cart-count').innerText = (JSON.parse(localStorage.getItem('gtm_cart')) || []).length;
+    </script>
+</body>
+</html>
