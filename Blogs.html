@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs & Insights - Performance Marketing Lab</title>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KR37VJM3');</script>
+    <!-- End Google Tag Manager -->
+
+    <style>
+        :root { --primary: #2563eb; --primary-dark: #1d4ed8; --success: #16a34a; --bg: #f8fafc; --text: #1e293b; --border: #cbd5e1; }
+        body { font-family: system-ui, sans-serif; margin: 0; padding: 20px; background: var(--bg); color: var(--text); line-height: 1.5; }
+        nav { background: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 25px; display: flex; gap: 20px; font-weight: 600; }
+        nav a { text-decoration: none; color: var(--primary); }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .blog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+        .search-bar input { padding: 10px; width: 250px; border: 1px solid var(--border); border-radius: 6px; }
+        .filter-tags { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .tag { background: white; border: 1px solid var(--border); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.875rem; font-weight: 500; }
+        .tag.active, .tag:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; }
+        .meta { font-size: 0.8rem; color: #64748b; margin-bottom: 10px; display: flex; gap: 15px; }
+        h2 { margin-top: 0; font-size: 1.25rem; }
+        p { font-size: 0.95rem; color: #475569; margin-bottom: 20px; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 15px; }
+        .btn { padding: 8px 14px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.875rem; background: var(--primary); color: white; text-decoration: none; }
+        .share-btn { background: #e2e8f0; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: #475569; }
+        .newsletter-box { background: linear-gradient(135deg, #1e293b, #0f172a); color: white; padding: 40px; border-radius: 12px; text-align: center; margin-top: 40px; }
+        .newsletter-box input { padding: 12px; width: 300px; border: none; border-radius: 6px; margin-right: 10px; font-size: 0.95rem; }
+        .newsletter-box button { background: var(--success); color: white; padding: 12px 20px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        #article-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.2rem; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+     <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KR37VJM3"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager -->
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="checkout.html">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+
+    <div class="container">
+        <div class="blog-header">
+            <h1>Marketing & Analytics Insights</h1>
+            <div class="search-bar">
+                <input type="text" id="blog-search-input" placeholder="Search articles...">
+            </div>
+        </div>
+
+        <div class="filter-tags">
+            <span class="tag active" data-category="all">All Articles</span>
+            <span class="tag" data-category="analytics">GA4 & GTM</span>
+            <span class="tag" data-category="seo">SEO Strategy</span>
+            <span class="tag" data-category="ppc">Paid Media</span>
+        </div>
+
+        <div class="blog-grid" id="blog-grid">
+            <div class="card blog-card" data-category="analytics" data-id="POST-01">
+                <div>
+                    <div class="meta"><span>📅 Sep 12, 2026</span><span>⏱️ 5 min</span><span>🏷️ GA4 & GTM</span></div>
+                    <h2>Mastering Custom Event Parameters in GA4</h2>
+                    <p>Learn how to pass user-defined variables and context flags into GA4 via structured dataLayer pushes.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn read-article-btn" data-title="Mastering Custom Event Parameters in GA4" data-id="POST-01">Read Article</button>
+                    <button class="share-btn" data-platform="LinkedIn" data-title="Mastering Custom Event Parameters in GA4">Share</button>
+                </div>
+            </div>
+
+            <div class="card blog-card" data-category="seo" data-id="POST-02">
+                <div>
+                    <div class="meta"><span>📅 Sep 10, 2026</span><span>⏱️ 7 min</span><span>🏷️ SEO</span></div>
+                    <h2>Technical SEO Audits: Resolving 404s & Canonical Mismatches</h2>
+                    <p>A step-by-step diagnostic framework for discovering crawl traps and fixing indexation drop-offs.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn read-article-btn" data-title="Technical SEO Audits: Resolving 404s & Canonical Mismatches" data-id="POST-02">Read Article</button>
+                    <button class="share-btn" data-platform="Twitter" data-title="Technical SEO Audits: Resolving 404s & Canonical Mismatches">Share</button>
+                </div>
+            </div>
+
+            <div class="card blog-card" data-category="ppc" data-id="POST-03">
+                <div>
+                    <div class="meta"><span>📅 Sep 05, 2026</span><span>⏱️ 4 min</span><span>🏷️ PPC</span></div>
+                    <h2>Smart Bidding Mechanics: Value-Based Optimization Explained</h2>
+                    <p>Unpack how machine learning bidding algorithms leverage first-party value rules to scale ROAS.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn read-article-btn" data-title="Smart Bidding Mechanics: Value-Based Optimization Explained" data-id="POST-03">Read Article</button>
+                    <button class="share-btn" data-platform="LinkedIn" data-title="Smart Bidding Mechanics: Value-Based Optimization Explained">Share</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="newsletter-box">
+            <h3>Subscribe to Our Weekly Growth Digest</h3>
+            <p style="color: #94a3b8; margin-bottom: 20px;">Get advanced tracking guides straight to your inbox.</p>
+            <form id="newsletter-form">
+                <input type="email" id="newsletter-email" required placeholder="Enter your business email">
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="article-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <h3 id="modal-title">Article Title</h3>
+            <p style="color: #64748b; margin-bottom: 20px;">Simulated article view container. All tracking signals have been sent to the dataLayer.</p>
+            <button class="btn" id="modal-finish-reading">Mark Article as Read</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('cart-count').innerText = (JSON.parse(localStorage.getItem('gtm_cart')) || []).length;
+
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const cat = this.getAttribute('data-category');
+                document.querySelectorAll('.blog-card').forEach(card => {
+                    card.style.display = (cat === 'all' || card.getAttribute('data-category') === cat) ? 'flex' : 'none';
+                });
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({ event: "blog_category_filter", filter_category: cat });
+            });
+        });
+
+        const searchInput = document.getElementById('blog-search-input');
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
+            searchTimeout = setTimeout(() => {
+                if(query.length > 2) {
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({ event: "internal_search", search_term: query });
+                }
+            }, 600);
+            document.querySelectorAll('.blog-card').forEach(card => {
+                card.style.display = card.innerText.toLowerCase().includes(query.toLowerCase()) ? 'flex' : 'none';
+            });
+        });
+
+        const modal = document.getElementById('article-modal');
+        document.querySelectorAll('.read-article-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.getElementById('modal-title').innerText = this.getAttribute('data-title');
+                modal.style.display = 'flex';
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: "select_content",
+                    content_type: "blog_article",
+                    item_id: this.getAttribute('data-id'),
+                    item_name: this.getAttribute('data-title')
+                });
+            });
+        });
+        document.getElementById('close-modal').addEventListener('click', () => modal.style.display = 'none');
+        document.getElementById('modal-finish-reading').addEventListener('click', () => {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ event: "article_fully_read" });
+            alert("Article completion tracked!");
+            modal.style.display = 'none';
+        });
+
+        document.querySelectorAll('.share-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({ event: "share", method: this.getAttribute('data-platform'), content_type: "article", item_name: this.getAttribute('data-title') });
+                alert(`Shared event tracked for ${this.getAttribute('data-platform')}!`);
+            });
+        });
+
+        document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ event: "generate_lead", form_destination: "Blog Newsletter Footer" });
+            alert("Thank you for subscribing!");
+            this.reset();
+        });
+    </script>
+</body>
+</html>
