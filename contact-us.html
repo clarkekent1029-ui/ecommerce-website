@@ -62,7 +62,7 @@
         document.getElementById('contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
             window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({ event: "generate_lead", form_destination: "Contact Form" });
+            window.dataLayer.push({ event: "form_submit", form_destination: "Contact Form" });
             alert("Thank you! Your message has been sent successfully.");
             this.reset();
         });
