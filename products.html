@@ -124,7 +124,7 @@
             }
         });
 
-          document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
                 const name = this.getAttribute('data-name');
@@ -135,6 +135,14 @@
                 localStorage.setItem('gtm_cart', JSON.stringify(cart));
                 updateCartCount();
 
+                const originalText = this.innerText;
+                this.innerText = "Added ✓";
+                this.style.background = "#16a34a";
+                setTimeout(() => {
+                    this.innerText = originalText;
+                    this.style.background = "";
+                }, 1500);
+
                 window.dataLayer.push({
                     event: "add_to_cart",
                     ecommerce: {
@@ -143,9 +151,10 @@
                         items: [{ item_id: id, item_name: name, price: price, quantity: 1 }]
                     }
                 });
-                alert(`${name} added to cart!`);
             });
         });
+
+
 
 
 
