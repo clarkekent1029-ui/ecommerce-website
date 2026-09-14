@@ -124,7 +124,7 @@
             }
         });
 
-        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+          document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
                 const name = this.getAttribute('data-name');
@@ -146,6 +146,9 @@
                 alert(`${name} added to cart!`);
             });
         });
+
+
+
 
         document.getElementById('product-search').addEventListener('input', function() {
             const query = this.value.toLowerCase();
