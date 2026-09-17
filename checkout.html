@@ -103,94 +103,116 @@ ml lang="en">
             </div>
         </div>
     </div>
+<script>
+  let cart = JSON.parse(localStorage.getItem('gtm_cart')) || [
+    { id: 'PROD-01', name: 'Analytics T-Shirt', price: 799 }
+  ];
 
-    <script>
-        let cart = JSON.parse(localStorage.getItem('gtm_cart')) || [
-            { id: 'PROD-01', name: 'Analytics T-Shirt', price: 799 }
-        ];
+  document.getElementById('cart-count').innerText = cart.length;
 
-        document.getElementById('cart-count').innerText = cart.length;
+  let subtotal = 0;
+  let discountAmount = 0;
+  let appliedCouponCode = "";
+  const itemsContainer = document.getElementById('cart-items-container');
 
-        let subtotal = 0;
-        let discountAmount = 0;
-        let appliedCouponCode = "";
-        const itemsContainer = document.getElementById('cart-items-container');
+  cart.forEach(item => {
+    subtotal += item.price;
+    itemsContainer.innerHTML += `<div class="summary-item"><span>${item.name}</span><span>₹${item.price}</span></div>`;
+  });
 
-        cart.forEach(item => {
-            subtotal += item.price;
-            itemsContainer.innerHTML += `<div class="summary-item"><span>${item.name}</span><span>₹${item.price}</span></div>`;
-        });
+  // --- BEGIN CHECKOUT DATA LAYER PUSH ---
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: "begin_checkout",
+    ecommerce: {
+      currency: "INR",
+      value: subtotal,
+      items: cart.map(item => ({
+        item_id: item.id,
+        item_name: item.name,
+        price: item.price,
+        quantity: 1
+      }))
+    }
+  });
+  // ------------------------------------
 
-        function updateTotals() {
-            let finalVal = subtotal - discountAmount;
-            document.getElementById('subtotal-val').innerText = subtotal;
-            document.getElementById('discount-val').innerText = discountAmount;
-            document.getElementById('final-total-val').innerText = finalVal > 0 ? finalVal : 0;
-        }
-        updateTotals();
+  function updateTotals() {
+    let finalVal = subtotal - discountAmount;
+    document.getElementById('subtotal-val').innerText = subtotal;
+    document.getElementById('discount-val').innerText = discountAmount;
+    document.getElementById('final-total-val').innerText = finalVal > 0 ? finalVal : 0;
+  }
 
-        document.getElementById('apply-coupon-btn').addEventListener('click', function() {
-            const rawCode = document.getElementById('coupon-input').value.trim().toUpperCase();
-            const feedbackEl = document.getElementById('coupon-feedback');
-            const summaryCard = document.getElementById('summary-card');
+  updateTotals();
 
-            if (rawCode === "SAVE20") {
-                if (appliedCouponCode === "SAVE20") {
-                    feedbackEl.style.color = "orange";
-                    feedbackEl.innerText = "Coupon already applied!";
-                    return;
-                }
-                appliedCouponCode = "SAVE20";
-                discountAmount = Math.round(subtotal * 0.20);
-                
-                document.querySelector('.discount-row').style.display = "flex";
-                document.querySelector('.discount-text').style.display = "inline";
-                document.getElementById('applied-code-label').innerText = "SAVE20";
-                
-                summaryCard.classList.remove('animation-pop');
-                void summaryCard.offsetWidth;
-                summaryCard.classList.add('animation-pop');
+  document.getElementById('apply-coupon-btn').addEventListener('click', function() {
+    const rawCode = document.getElementById('coupon-input').value.trim().toUpperCase();
+    const feedbackEl = document.getElementById('coupon-feedback');
+    const summaryCard = document.getElementById('summary-card');
 
-                feedbackEl.style.color = "#16a34a";
-                feedbackEl.innerText = "Success! 20% discount applied.";
-                updateTotals();
+    if (rawCode === "SAVE20") {
+      if (appliedCouponCode === "SAVE20") {
+        feedbackEl.style.color = "orange";
+        feedbackEl.innerText = "Coupon already applied!";
+        return;
+      }
+      appliedCouponCode = "SAVE20";
+      discountAmount = Math.round(subtotal * 0.20);
 
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({ event: "coupon_applied", coupon_name: "SAVE20", discount_value: discountAmount });
-            } else {
-                feedbackEl.style.color = "#dc2626";
-                feedbackEl.innerText = "Invalid coupon code. Try SAVE20";
-            }
-        });
+      document.querySelector('.discount-row').style.display = "flex";
+      document.querySelector('.discount-text').style.display = "inline";
+      document.getElementById('applied-code-label').innerText = "SAVE20";
 
-        document.getElementById('complete-purchase-btn').addEventListener('click', function() {
-            const name = document.getElementById('full-name').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
+      summaryCard.classList.remove('animation-pop');
+      void summaryCard.offsetWidth;
+      summaryCard.classList.add('animation-pop');
 
-            if(!name || !phone || !address) {
-                alert("Please fill in all required billing and address fields.");
-                return;
-            }
+      feedbackEl.style.color = "#16a34a";
+      feedbackEl.innerText = "Success! 20% discount applied.";
+      updateTotals();
 
-            const transactionId = "TXN-" + Math.floor(100000 + Math.random() * 900000);
-            const finalVal = subtotal - discountAmount;
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "coupon_applied", coupon_name: "SAVE20", discount_value: discountAmount });
+    } else {
+      feedbackEl.style.color = "#dc2626";
+      feedbackEl.innerText = "Invalid coupon code. Try SAVE20";
+    }
+  });
 
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                event: "purchase",
-                ecommerce: {
-                    transaction_id: transactionId,
-                    value: finalVal,
-                    currency: "INR",
-                    coupon: appliedCouponCode || "none",
-                    items: cart.map(item => ({ item_id: item.id, item_name: item.name, price: item.price, quantity: 1 }))
-                }
-            });
+  document.getElementById('complete-purchase-btn').addEventListener('click', function() {
+    const name = document.getElementById('full-name').value;
+    const phone = document.getElementById('phone').value;
+    const address = document.getElementById('address').value;
 
-            localStorage.removeItem('gtm_cart');
-            window.location.href = `thank-you.html?tx=${transactionId}&val=${finalVal}&coupon=${appliedCouponCode}`;
-        });
-    </script>
+    if (!name || !phone || !address) {
+      alert("Please fill in all required billing and address fields.");
+      return;
+    }
+
+    const transactionId = "TXN-" + Math.floor(100000 + Math.random() * 900000);
+    const finalVal = subtotal - discountAmount;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "purchase",
+      ecommerce: {
+        transaction_id: transactionId,
+        value: finalVal,
+        currency: "INR",
+        coupon: appliedCouponCode || "none",
+        items: cart.map(item => ({ item_id: item.id, item_name: item.name, price: item.price, quantity: 1 }))
+      }
+    });
+
+    localStorage.removeItem('gtm_cart');
+    window.location.href = `thank-you.html?tx=${transactionId}&val=${finalVal}&coupon=${appliedCouponCode}`;
+  });
+</script>
+
+
+   
+
+ 
 </body>
 </html>
