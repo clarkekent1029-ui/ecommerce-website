@@ -56,7 +56,7 @@
         </form>
     </div>
 
-    <script>
+   <script>
   document.getElementById('cart-count').innerText = (JSON.parse(localStorage.getItem('gtm_cart')) || []).length;
 
   document.getElementById('contact-form').addEventListener('submit', function(e) {
@@ -69,8 +69,21 @@
     });
     
     this.reset();
+
+    // Dynamically display a clean on-screen success message
+    let successMsg = document.getElementById('form-success-message');
+    if (!successMsg) {
+      successMsg = document.createElement('div');
+      successMsg.id = 'form-success-message';
+      successMsg.style.color = '#2e7d32'; // Clean success green
+      successMsg.style.marginTop = '12px';
+      successMsg.style.fontWeight = '500';
+      successMsg.innerText = 'Thank you! Your message has been sent successfully.';
+      this.appendChild(successMsg); // Appends it inside the form container
+    }
   });
 </script>
+
 
 </body>
 </html>
