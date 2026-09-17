@@ -57,15 +57,20 @@
     </div>
 
     <script>
-        document.getElementById('cart-count').innerText = (JSON.parse(localStorage.getItem('gtm_cart')) || []).length;
+  document.getElementById('cart-count').innerText = (JSON.parse(localStorage.getItem('gtm_cart')) || []).length;
 
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({ event: "form_submit", form_destination: "Contact Form" });
-            alert("Thank you! Your message has been sent successfully.");
-            this.reset();
-        });
-    </script>
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ 
+      event: "generate_lead", 
+      form_destination: "Contact Form" 
+    });
+    
+    this.reset();
+  });
+</script>
+
 </body>
 </html>
