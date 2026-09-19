@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - Performance Marketing Lab</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Performance Marketing Lab</title>
      <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -11,6 +14,7 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-KR37VJM3');</script>
     <!-- End Google Tag Manager -->
+
     <style>
         :root { --primary: #2563eb; --primary-dark: #1d4ed8; --bg: #f8fafc; --text: #1e293b; --border: #cbd5e1; }
         body { font-family: system-ui, sans-serif; margin: 0; padding: 20px; background: var(--bg); color: var(--text); line-height: 1.5; }
@@ -24,6 +28,8 @@
         .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; }
         .badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; }
         h2 { margin: 0 0 10px 0; font-size: 1.2rem; }
+        .card a.product-title-link { text-decoration: none; color: var(--text); }
+        .card a.product-title-link:hover { color: var(--primary); }
         .price { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 15px; }
         .card-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; border-top: 1px solid #f1f5f9; padding-top: 15px; }
         .btn { padding: 10px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.875rem; text-align: center; text-decoration: none; }
@@ -31,21 +37,19 @@
         .btn-outline:hover { background: #cbd5e1; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-dark); }
-        #quickview-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 100; }
-        .modal-content { background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; position: relative; }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.2rem; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
+     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KR37VJM3"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager -->
+
     <nav>
         <a href="index.html">Home</a>
         <a href="products.html">Products</a>
         <a href="blogs.html">Blogs</a>
-        <a href="contact.html">Contact Us</a>
+        <a href="contact-us.html">Contact Us</a>
         <a href="checkout.html">Cart (<span id="cart-count">0</span>)</a>
     </nav>
 
@@ -63,41 +67,44 @@
         </div>
 
         <div class="product-grid" id="product-grid">
-            <div class="card product-card" data-id="PROD-01" data-name="Analytics T-Shirt" data-price="799">
+            <!-- Product 1 -->
+            <div class="card product-card" data-price="799">
                 <div>
                     <span class="badge">Apparel</span>
-                    <h2>Analytics T-Shirt</h2>
+                    <h2><a href="product-tshirt.html" class="product-title-link">Analytics T-Shirt</a></h2>
                     <p style="color: #64748b; font-size: 0.9rem;">High-durability combed cotton tee featuring event tracking graphics.</p>
                     <div class="price">₹799</div>
                 </div>
                 <div class="card-buttons">
-                    <a href="product-detail.html?id=PROD-01" class="btn btn-outline">Details Page</a>
+                    <a href="product-tshirt.html" class="btn btn-outline">Details Page</a>
                     <button class="btn btn-primary add-to-cart-btn" data-id="PROD-01" data-name="Analytics T-Shirt" data-price="799">Add to Cart</button>
                 </div>
             </div>
 
-            <div class="card product-card" data-id="PROD-02" data-name="GTM Coffee Mug" data-price="349">
+            <!-- Product 2 -->
+            <div class="card product-card" data-price="349">
                 <div>
                     <span class="badge">Accessories</span>
-                    <h2>GTM Coffee Mug</h2>
+                    <h2><a href="product-mug.html" class="product-title-link">GTM Coffee Mug</a></h2>
                     <p style="color: #64748b; font-size: 0.9rem;">Ceramic 350ml mug built for long debugging nights in preview mode.</p>
                     <div class="price">₹349</div>
                 </div>
                 <div class="card-buttons">
-                    <a href="product-detail.html?id=PROD-02" class="btn btn-outline">Details Page</a>
+                    <a href="product-mug.html" class="btn btn-outline">Details Page</a>
                     <button class="btn btn-primary add-to-cart-btn" data-id="PROD-02" data-name="GTM Coffee Mug" data-price="349">Add to Cart</button>
                 </div>
             </div>
 
-            <div class="card product-card" data-id="PROD-03" data-name="GA4 Debugger Hoodie" data-price="1499">
+            <!-- Product 3 -->
+            <div class="card product-card" data-price="1499">
                 <div>
                     <span class="badge">Apparel</span>
-                    <h2>GA4 Debugger Hoodie</h2>
+                    <h2><a href="product-hoodie.html" class="product-title-link">GA4 Debugger Hoodie</a></h2>
                     <p style="color: #64748b; font-size: 0.9rem;">Heavyweight thermal hoodie designed for cold server rooms and remote audits.</p>
                     <div class="price">₹1499</div>
                 </div>
                 <div class="card-buttons">
-                    <a href="product-detail.html?id=PROD-03" class="btn btn-outline">Details Page</a>
+                    <a href="product-hoodie.html" class="btn btn-outline">Details Page</a>
                     <button class="btn btn-primary add-to-cart-btn" data-id="PROD-03" data-name="GA4 Debugger Hoodie" data-price="1499">Add to Cart</button>
                 </div>
             </div>
@@ -110,6 +117,7 @@
         }
         updateCartCount();
 
+        // Catalog view_item_list event
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
             event: "view_item_list",
@@ -124,6 +132,7 @@
             }
         });
 
+        // Quick add-to-cart from catalog
         document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
@@ -131,17 +140,9 @@
                 const price = parseFloat(this.getAttribute('data-price'));
 
                 let cart = JSON.parse(localStorage.getItem('gtm_cart')) || [];
-                cart.push({ id, name, price });
+                cart.push({ id, name, price, quantity: 1 });
                 localStorage.setItem('gtm_cart', JSON.stringify(cart));
                 updateCartCount();
-
-                const originalText = this.innerText;
-                this.innerText = "Added ✓";
-                this.style.background = "#16a34a";
-                setTimeout(() => {
-                    this.innerText = originalText;
-                    this.style.background = "";
-                }, 1500);
 
                 window.dataLayer.push({
                     event: "add_to_cart",
@@ -151,14 +152,11 @@
                         items: [{ item_id: id, item_name: name, price: price, quantity: 1 }]
                     }
                 });
+                alert(`${name} added to cart!`);
             });
         });
 
-
-
-
-
-
+        // Search & Sort filters
         document.getElementById('product-search').addEventListener('input', function() {
             const query = this.value.toLowerCase();
             document.querySelectorAll('.product-card').forEach(card => {
