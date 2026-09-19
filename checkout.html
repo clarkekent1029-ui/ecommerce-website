@@ -116,7 +116,9 @@
   let subtotal = 0;
   let discountAmount = 0;
   let appliedCouponCode = "";
-  let orderCompleted = false; // Flag to stop abandoned cart tracking if order goes through
+  let orderCompleted = false; 
+  let shippingInfoSent = false;
+  let paymentInfoSent = false;
 
   function renderCartItems() {
     const itemsContainer = document.getElementById('cart-items-container');
@@ -159,7 +161,6 @@
         const index = parseInt(this.getAttribute('data-index'));
         const removedItem = cart[index];
 
-        // Push GA4 remove_from_cart event to dataLayer
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           event: "remove_from_cart",
@@ -175,17 +176,13 @@
           }
         });
 
-        // Remove item from array & storage
         cart.splice(index, 1);
         localStorage.setItem('gtm_cart', JSON.stringify(cart));
-
-        // Re-render summary list
         renderCartItems();
       });
     });
   }
 
-  // Initial render
   renderCartItems();
 
   // --- BEGIN CHECKOUT DATA LAYER PUSH ---
@@ -203,7 +200,35 @@
       }))
     }
   });
-  // ------------------------------------
+
+  // --- ADD SHIPPING INFO EVENT ---
+  // Fires when user finishes filling out billing/address form fields and focus leaves them
+  document.querySelectorAll('#full-name, #phone, #address').forEach(input => {
+    input.addEventListener('blur', function() {
+      const name = document.getElementById('full-name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+
+      if (!shippingInfoSent && name && phone && address) {
+        shippingInfoSent = true;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "add_shipping_info",
+          ecommerce: {
+            currency: "INR",
+            value: subtotal - discountAmount,
+            shipping_tier: "Standard Delivery",
+            items: cart.map(item => ({
+              item_id: item.id,
+              item_name: item.name,
+              price: item.price,
+              quantity: 1
+            }))
+          }
+        });
+      }
+    });
+  });
 
   document.getElementById('apply-coupon-btn').addEventListener('click', function() {
     const rawCode = document.getElementById('coupon-input').value.trim().toUpperCase();
@@ -240,16 +265,36 @@
   });
 
   document.getElementById('complete-purchase-btn').addEventListener('click', function() {
-    const name = document.getElementById('full-name').value;
-    const phone = document.getElementById('phone').value;
-    const address = document.getElementById('address').value;
+    const name = document.getElementById('full-name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
 
     if (!name || !phone || !address) {
       alert("Please fill in all required billing and address fields.");
       return;
     }
 
-    orderCompleted = true; // Mark purchase successful so abandonment trigger won't fire
+    // --- ADD PAYMENT INFO EVENT (Fires on button click right before purchase) ---
+    if (!paymentInfoSent) {
+      paymentInfoSent = true;
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "add_payment_info",
+        ecommerce: {
+          currency: "INR",
+          value: subtotal - discountAmount,
+          payment_type: "Simulated Gateway",
+          items: cart.map(item => ({
+            item_id: item.id,
+            item_name: item.name,
+            price: item.price,
+            quantity: 1
+          }))
+        }
+      });
+    }
+
+    orderCompleted = true; 
     const transactionId = "TXN-" + Math.floor(100000 + Math.random() * 900000);
     const finalVal = subtotal - discountAmount;
 
@@ -270,7 +315,6 @@
   });
 
   // --- INDUSTRY-STANDARD ABANDONED CART TRACKING ---
-  // Fires if items are in the cart, checkout wasn't completed, and user navigates away or closes tab
   window.addEventListener('visibilitychange', function() {
     if (document.visibilityState === 'hidden' && !orderCompleted && cart.length > 0) {
       window.dataLayer = window.dataLayer || [];
