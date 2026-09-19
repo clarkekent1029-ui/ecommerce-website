@@ -1,4 +1,5 @@
-ml lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,7 @@ ml lang="en">
     <!-- End Google Tag Manager -->
 
     <style>
-        :root { --primary: #2563eb; --primary-dark: #1d4ed8; --success: #16a34a; --bg: #f8fafc; --text: #1e293b; --border: #cbd5e1; }
+        :root { --primary: #2563eb; --primary-dark: #1d4ed8; --success: #16a34a; --bg: #f8fafc; --text: #1e293b; --border: #cbd5e1; --danger: #dc2626; }
         body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; line-height: 1.5; }
         nav { background: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 25px; display: flex; gap: 20px; font-weight: 600; }
         nav a { text-decoration: none; color: var(--primary); }
@@ -23,7 +24,10 @@ ml lang="en">
         .form-group { margin-bottom: 15px; }
         label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 5px; }
         input[type="text"], input[type="tel"] { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box; font-size: 0.95rem; }
-        .summary-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; }
+        .summary-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.95rem; }
+        .summary-item-details { display: flex; flex-direction: column; }
+        .remove-item-btn { background: none; border: none; color: var(--danger); font-size: 0.75rem; cursor: pointer; padding: 0; text-align: left; margin-top: 2px; }
+        .remove-item-btn:hover { text-decoration: underline; }
         .summary-total { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; border-top: 2px solid #f1f5f9; padding-top: 15px; margin-top: 15px; }
         .coupon-box { display: flex; gap: 10px; margin-top: 15px; }
         .coupon-box input { text-transform: uppercase; width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; }
@@ -103,22 +107,86 @@ ml lang="en">
             </div>
         </div>
     </div>
+
 <script>
   let cart = JSON.parse(localStorage.getItem('gtm_cart')) || [
     { id: 'PROD-01', name: 'Analytics T-Shirt', price: 799 }
   ];
 
-  document.getElementById('cart-count').innerText = cart.length;
-
   let subtotal = 0;
   let discountAmount = 0;
   let appliedCouponCode = "";
-  const itemsContainer = document.getElementById('cart-items-container');
+  let orderCompleted = false; // Flag to stop abandoned cart tracking if order goes through
 
-  cart.forEach(item => {
-    subtotal += item.price;
-    itemsContainer.innerHTML += `<div class="summary-item"><span>${item.name}</span><span>₹${item.price}</span></div>`;
-  });
+  function renderCartItems() {
+    const itemsContainer = document.getElementById('cart-items-container');
+    itemsContainer.innerHTML = "";
+    subtotal = 0;
+
+    if (cart.length === 0) {
+      itemsContainer.innerHTML = `<p style="color: #64748b; font-size: 0.9rem;">Your cart is empty.</p>`;
+    }
+
+    cart.forEach((item, index) => {
+      subtotal += item.price;
+      itemsContainer.innerHTML += `
+        <div class="summary-item">
+          <div class="summary-item-details">
+            <span>${item.name}</span>
+            <button type="button" class="remove-item-btn" data-index="${index}">Remove</button>
+          </div>
+          <span>₹${item.price}</span>
+        </div>`;
+    });
+
+    document.getElementById('cart-count').innerText = cart.length;
+    updateTotals();
+    attachRemoveListeners();
+  }
+
+  function updateTotals() {
+    let finalVal = subtotal - discountAmount;
+    if (finalVal < 0) finalVal = 0;
+    document.getElementById('subtotal-val').innerText = subtotal;
+    document.getElementById('discount-val').innerText = discountAmount;
+    document.getElementById('final-total-val').innerText = finalVal;
+  }
+
+  // --- REMOVE FROM CART EVENT ---
+  function attachRemoveListeners() {
+    document.querySelectorAll('.remove-item-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const index = parseInt(this.getAttribute('data-index'));
+        const removedItem = cart[index];
+
+        // Push GA4 remove_from_cart event to dataLayer
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "remove_from_cart",
+          ecommerce: {
+            currency: "INR",
+            value: removedItem.price,
+            items: [{
+              item_id: removedItem.id,
+              item_name: removedItem.name,
+              price: removedItem.price,
+              quantity: 1
+            }]
+          }
+        });
+
+        // Remove item from array & storage
+        cart.splice(index, 1);
+        localStorage.setItem('gtm_cart', JSON.stringify(cart));
+
+        // Re-render summary list
+        renderCartItems();
+      });
+    });
+  }
+
+  // Initial render
+  renderCartItems();
 
   // --- BEGIN CHECKOUT DATA LAYER PUSH ---
   window.dataLayer = window.dataLayer || [];
@@ -136,15 +204,6 @@ ml lang="en">
     }
   });
   // ------------------------------------
-
-  function updateTotals() {
-    let finalVal = subtotal - discountAmount;
-    document.getElementById('subtotal-val').innerText = subtotal;
-    document.getElementById('discount-val').innerText = discountAmount;
-    document.getElementById('final-total-val').innerText = finalVal > 0 ? finalVal : 0;
-  }
-
-  updateTotals();
 
   document.getElementById('apply-coupon-btn').addEventListener('click', function() {
     const rawCode = document.getElementById('coupon-input').value.trim().toUpperCase();
@@ -190,6 +249,7 @@ ml lang="en">
       return;
     }
 
+    orderCompleted = true; // Mark purchase successful so abandonment trigger won't fire
     const transactionId = "TXN-" + Math.floor(100000 + Math.random() * 900000);
     const finalVal = subtotal - discountAmount;
 
@@ -198,7 +258,7 @@ ml lang="en">
       event: "purchase",
       ecommerce: {
         transaction_id: transactionId,
-        value: finalVal,
+        value: finalVal < 0 ? 0 : finalVal,
         currency: "INR",
         coupon: appliedCouponCode || "none",
         items: cart.map(item => ({ item_id: item.id, item_name: item.name, price: item.price, quantity: 1 }))
@@ -208,11 +268,29 @@ ml lang="en">
     localStorage.removeItem('gtm_cart');
     window.location.href = `thank-you.html?tx=${transactionId}&val=${finalVal}&coupon=${appliedCouponCode}`;
   });
+
+  // --- INDUSTRY-STANDARD ABANDONED CART TRACKING ---
+  // Fires if items are in the cart, checkout wasn't completed, and user navigates away or closes tab
+  window.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'hidden' && !orderCompleted && cart.length > 0) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "cart_abandonment",
+        ecommerce: {
+          currency: "INR",
+          value: subtotal - discountAmount,
+          items: cart.map(item => ({
+            item_id: item.id,
+            item_name: item.name,
+            price: item.price,
+            quantity: 1
+          }))
+        }
+      });
+    }
+  });
 </script>
 
-
-   
-
- 
 </body>
 </html>
+
