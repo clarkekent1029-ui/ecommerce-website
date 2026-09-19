@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTM Coffee Mug - Performance Marketing Lab</title>
+  <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KR37VJM3');</script>
+    <!-- End Google Tag Manager -->
+    <style>
+        :root { --primary: #2563eb; --primary-dark: #1d4ed8; --bg: #f8fafc; --text: #1e293b; --border: #cbd5e1; }
+        body { font-family: system-ui, sans-serif; margin: 0; padding: 20px; background: var(--bg); color: var(--text); line-height: 1.5; }
+        nav { background: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 25px; display: flex; gap: 20px; font-weight: 600; }
+        nav a { text-decoration: none; color: var(--primary); }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .product-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        @media(max-width: 768px) { .product-layout { grid-template-columns: 1fr; padding: 20px; } }
+        .product-gallery { display: flex; flex-direction: column; gap: 15px; }
+        .main-image { width: 100%; height: 380px; background: linear-gradient(135deg, #e0f2fe 0%, #bfdbfe 100%); border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--primary-dark); font-weight: 700; border: 2px dashed #93c5fd; padding: 20px; box-sizing: border-box; }
+        .badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; }
+        h1 { margin: 0 0 10px 0; font-size: 1.8rem; }
+        .price { font-size: 1.75rem; font-weight: 700; color: var(--primary); margin-bottom: 15px; }
+        .rating { color: #f59e0b; font-size: 0.9rem; margin-bottom: 15px; font-weight: 600; }
+        .description { color: #475569; font-size: 0.95rem; margin-bottom: 20px; }
+        .options-group { margin-bottom: 20px; }
+        .options-group label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; }
+        .options-group select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; background: white; }
+        .action-row { display: flex; gap: 15px; align-items: center; margin-top: 25px; }
+        .quantity-selector { display: flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+        .quantity-selector button { background: #f1f5f9; border: none; padding: 10px 15px; cursor: pointer; font-weight: bold; }
+        .quantity-selector input { width: 40px; text-align: center; border: none; font-size: 1rem; font-weight: 600; }
+        .btn { padding: 12px 24px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 1rem; text-align: center; text-decoration: none; flex-grow: 1; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .stock-status { color: #16a34a; font-size: 0.85rem; font-weight: 600; margin-top: 10px; display: flex; align-items: center; gap: 5px; }
+        .stock-status::before { content: "•"; font-size: 1.2rem; }
+        .tabs-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KR37VJM3"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="checkout.html">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+
+    <div class="container">
+        <div class="product-layout">
+            <div class="product-gallery">
+                <div class="main-image">
+                    <span style="font-size: 1.5rem; margin-bottom: 5px;">⚡ [Generic Product Creative]</span>
+                    <p style="font-size: 0.85rem; color: #475569; margin: 0;">GTM Coffee Mug — Visual Asset</p>
+                </div>
+            </div>
+            <div>
+                <span class="badge">Accessories</span>
+                <h1>GTM Coffee Mug</h1>
+                <div class="rating">★★★★★ <span style="color:#64748b; font-size:0.8rem;">(32 Verified Reviews)</span></div>
+                <div class="price">₹349</div>
+                <p class="description">Ceramic 350ml mug built for long debugging nights in preview mode. Microwave and dishwasher safe with high-heat resistant print.</p>
+                
+                <div class="options-group">
+                    <label for="product-option">Color Theme:</label>
+                    <select id="product-option">
+                        <option value="Classic White">Classic White</option>
+                        <option value="Tag Assistant Blue">Tag Assistant Blue</option>
+                        <option value="Debug Slate Dark">Debug Slate Dark</option>
+                    </select>
+                </div>
+
+                <div class="stock-status">In Stock & Ready to Ship</div>
+
+                <div class="action-row">
+                    <div class="quantity-selector">
+                        <button type="button" onclick="document.getElementById('quantity').value = Math.max(1, parseInt(document.getElementById('quantity').value) - 1)">-</button>
+                        <input type="text" id="quantity" value="1" readonly>
+                        <button type="button" onclick="document.getElementById('quantity').value = parseInt(document.getElementById('quantity').value) + 1">+</button>
+                    </div>
+                    <button class="btn btn-primary" id="detail-add-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs-container">
+            <h3>Specifications</h3>
+            <p style="color: #475569;">Capacity: 350ml. Material: Premium ceramic with durable thermal sublimation print.</p>
+        </div>
+    </div>
+
+    <script>
+        function updateCartCount() {
+            document.getElementById('cart-count').innerText = (JSON.parse(localStorage.getItem('gtm_cart')) || []).length;
+        }
+        updateCartCount();
+
+        // GA4 view_item event
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: "view_item",
+            ecommerce: {
+                currency: "INR",
+                value: 349,
+                items: [{ item_id: "PROD-02", item_name: "GTM Coffee Mug", price: 349, item_category: "Accessories", quantity: 1 }]
+            }
+        });
+
+        document.getElementById('detail-add-cart').addEventListener('click', function() {
+            const qty = parseInt(document.getElementById('quantity').value);
+            const variant = document.getElementById('product-option').value;
+            let cart = JSON.parse(localStorage.getItem('gtm_cart')) || [];
+            
+            cart.push({ id: "PROD-02", name: "GTM Coffee Mug", price: 349, variant: variant, quantity: qty });
+            localStorage.setItem('gtm_cart', JSON.stringify(cart));
+            updateCartCount();
+
+            window.dataLayer.push({
+                event: "add_to_cart",
+                ecommerce: {
+                    currency: "INR",
+                    value: 349 * qty,
+                    items: [{ item_id: "PROD-02", item_name: "GTM Coffee Mug", price: 349, item_variant: variant, quantity: qty }]
+                }
+            });
+            alert(`GTM Coffee Mug (${variant}) added to cart!`);
+        });
+    </script>
+</body>
+</html>
